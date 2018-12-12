@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>航班查询</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/layui.css"  media="all">
+    <script src="js/jquery-1.3.2.min.js"></script>
+    <script src="layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<div class="demoTable">
+
+    <div class="layui-inline" id="date1">
+        <!--<input class="layui-input" name="id" id="listId" autocomplete="off">-->
+        日期：<input type="text" name="date" class="layui-input">
+        城市：从<input type="text" name="startcity">到<input type="text" name="endcity">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+
+<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+
+
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //方法级渲染
+        table.render({
+            elem: '#LAY_table_user'
+            ,url: '/listAll'
+            ,cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+
+            response: {
+                    statusName: 'code' //规定数据状态的字段名称，默认：code
+                    ,
+                    statusCode: 1000 //规定成功的状态码，默认：0
+                    ,
+                    msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                    ,
+                    countName: 'count' //规定数据总数的字段名称，默认：count
+                    ,
+                    dataName: 'data' //规定数据列表的字段名称，默认：data
+                }
+            ,cols: [[
+                {field:'id', width:'5%', title: 'ID', sort: true}
+                ,{field:'model', width:'10%', title: '航空公司/机型'}
+                ,{field:'offtime', width:'10%', title: '起飞时间',sort: true, templet:"<div>{{layui.util.toDateString(d.offtime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ,{field:'endtime', width:'10%', title: '抵达时间', sort: true, templet:"<div>{{layui.util.toDateString(d.endtime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ,{field:'airport', width:'10%', title: '机场'}
+                ,{field:'duration', title: '飞行用时', width: '10%',sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'transit', title: '经停', width:'7%', /*sort: true*/}
+                ,{field:'fprice', title: '参考报价', width: '10%',sort: true}
+                ,{field:'operation', title: '查询机票', toolbar: '#barDemo', width:150}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 315
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var listId = $('#listId');
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        key: {
+                            id: listId.val()
+                        }
+                    }
+                });
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
+</body>
+</html>

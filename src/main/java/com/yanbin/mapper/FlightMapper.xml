@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yanbin.dao.FlightMapper">
+    <resultMap id="BaseResultMap" type="com.yanbin.pojo.Flight">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="model" property="model" jdbcType="VARCHAR"/>
+        <result column="offtime" property="offtime" jdbcType="TIME"/>
+        <result column="endtime" property="endtime" jdbcType="TIME"/>
+        <result column="airport" property="airport" jdbcType="VARCHAR"/>
+        <result column="duration" property="duration" jdbcType="VARCHAR"/>
+        <result column="transit" property="transit" jdbcType="VARCHAR"/>
+        <result column="fprice" property="fprice" jdbcType="INTEGER"/>
+        <result column="time" property="time" jdbcType="DATE"/>
+        <result column="startcity" property="startcity" jdbcType="VARCHAR"/>
+        <result column="endcity" property="endcity" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, model, offtime, endtime, airport, duration, transit, fprice, time, startcity, 
+    endcity
+  </sql>
+
+
+    <!--查询所有的信息列表展示-->
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+      select f.id, f.model, f.offtime, f.endtime, f.airport, f.duration, f.transit, f.fprice
+      from flight as f
+      LEFT JOIN website as w
+      on f.id = w.fid
+
+    </select>
+
+
+    <!-- 根据id进行票价搜索查询 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+
+      select w.ticket, w.price
+      from flight as f
+      LEFT JOIN website as w
+      on f.id = w.fid
+      where f.id = #{id}
+    </select>
+
+
+
+
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flight
+    where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yanbin.pojo.Flight">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into flight (model, offtime, endtime,
+        airport, duration, transit,
+        fprice, time, startcity,
+        endcity)
+        values (#{model,jdbcType=VARCHAR}, #{offtime,jdbcType=TIME}, #{endtime,jdbcType=TIME},
+        #{airport,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR}, #{transit,jdbcType=VARCHAR},
+        #{fprice,jdbcType=INTEGER}, #{time,jdbcType=DATE}, #{startcity,jdbcType=VARCHAR},
+        #{endcity,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yanbin.pojo.Flight">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into flight
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="model != null">
+                model,
+            </if>
+            <if test="offtime != null">
+                offtime,
+            </if>
+            <if test="endtime != null">
+                endtime,
+            </if>
+            <if test="airport != null">
+                airport,
+            </if>
+            <if test="duration != null">
+                duration,
+            </if>
+            <if test="transit != null">
+                transit,
+            </if>
+            <if test="fprice != null">
+                fprice,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+            <if test="startcity != null">
+                startcity,
+            </if>
+            <if test="endcity != null">
+                endcity,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="model != null">
+                #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="offtime != null">
+                #{offtime,jdbcType=TIME},
+            </if>
+            <if test="endtime != null">
+                #{endtime,jdbcType=TIME},
+            </if>
+            <if test="airport != null">
+                #{airport,jdbcType=VARCHAR},
+            </if>
+            <if test="duration != null">
+                #{duration,jdbcType=VARCHAR},
+            </if>
+            <if test="transit != null">
+                #{transit,jdbcType=VARCHAR},
+            </if>
+            <if test="fprice != null">
+                #{fprice,jdbcType=INTEGER},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=DATE},
+            </if>
+            <if test="startcity != null">
+                #{startcity,jdbcType=VARCHAR},
+            </if>
+            <if test="endcity != null">
+                #{endcity,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yanbin.pojo.Flight">
+        update flight
+        <set>
+            <if test="model != null">
+                model = #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="offtime != null">
+                offtime = #{offtime,jdbcType=TIME},
+            </if>
+            <if test="endtime != null">
+                endtime = #{endtime,jdbcType=TIME},
+            </if>
+            <if test="airport != null">
+                airport = #{airport,jdbcType=VARCHAR},
+            </if>
+            <if test="duration != null">
+                duration = #{duration,jdbcType=VARCHAR},
+            </if>
+            <if test="transit != null">
+                transit = #{transit,jdbcType=VARCHAR},
+            </if>
+            <if test="fprice != null">
+                fprice = #{fprice,jdbcType=INTEGER},
+            </if>
+            <if test="time != null">
+                time = #{time,jdbcType=DATE},
+            </if>
+            <if test="startcity != null">
+                startcity = #{startcity,jdbcType=VARCHAR},
+            </if>
+            <if test="endcity != null">
+                endcity = #{endcity,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yanbin.pojo.Flight">
+    update flight
+    set model = #{model,jdbcType=VARCHAR},
+      offtime = #{offtime,jdbcType=TIME},
+      endtime = #{endtime,jdbcType=TIME},
+      airport = #{airport,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR},
+      transit = #{transit,jdbcType=VARCHAR},
+      fprice = #{fprice,jdbcType=INTEGER},
+      time = #{time,jdbcType=DATE},
+      startcity = #{startcity,jdbcType=VARCHAR},
+      endcity = #{endcity,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
