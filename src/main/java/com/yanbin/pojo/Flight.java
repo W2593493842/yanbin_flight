@@ -1,6 +1,7 @@
 package com.yanbin.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Flight {
     private Integer id;
@@ -24,6 +25,19 @@ public class Flight {
     private String startcity;
 
     private String endcity;
+
+
+
+    //一方
+    private List<Website> websites;
+
+    public List<Website> getWebsites() {
+        return websites;
+    }
+
+    public void setWebsites(List<Website> websites) {
+        this.websites = websites;
+    }
 
     public Integer getId() {
         return id;
@@ -111,5 +125,23 @@ public class Flight {
 
     public void setEndcity(String endcity) {
         this.endcity = endcity == null ? null : endcity.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", model='" + model + '\'' +
+                ", offtime=" + offtime +
+                ", endtime=" + endtime +
+                ", airport='" + airport + '\'' +
+                ", duration='" + duration + '\'' +
+                ", transit='" + transit + '\'' +
+                ", fprice=" + fprice +
+                ", time=" + time +
+                ", startcity='" + startcity + '\'' +
+                ", endcity='" + endcity + '\'' +
+                ", websites=" + websites +
+                '}';
     }
 }

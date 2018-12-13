@@ -9,6 +9,16 @@ public class Website {
 
     private Integer fid;
 
+    private Flight flight;
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
     public Integer getId() {
         return id;
     }

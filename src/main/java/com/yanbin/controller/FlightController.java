@@ -31,7 +31,15 @@ public class FlightController {
     @RequestMapping("/listId")
     @ResponseBody
     public R selectByFlight(){
+
         return flightService.selectByFlight();
+    }
+
+    //根据条件进行查询
+    @RequestMapping("/listDayAndCity")
+    @ResponseBody
+    public R selectByDayAndCrity(){
+        return flightService.selectByDayAndCrity();
     }
 
 }

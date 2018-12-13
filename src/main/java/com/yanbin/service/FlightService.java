@@ -15,4 +15,7 @@ public interface FlightService {
     //根据id进行票价搜索查询
     R selectByFlight();
 
+    //根据条件查询
+    R selectByDayAndCrity();
+
 }

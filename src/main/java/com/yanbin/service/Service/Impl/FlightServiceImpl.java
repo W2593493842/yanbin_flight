@@ -21,7 +21,7 @@ public class FlightServiceImpl implements FlightService{
     //查询所有进行列表展示
     @Override
     public R selectById() {
-        System.out.println(flightMapper.selectById());
+        System.out.println(flightMapper.selectById().toString());
         if (flightMapper.selectById()!=null){
             return RUtil.setOK("查询成功", flightMapper.selectById());
         }else{
@@ -38,6 +38,17 @@ public class FlightServiceImpl implements FlightService{
             return RUtil.setOK("查询成功", flightMapper.selectByFlight());
         }else{
             return RUtil.setERROR("暂无数据",null);
+        }
+    }
+
+    //根据条件进行查询
+    @Override
+    public R selectByDayAndCrity() {
+
+        if(flightMapper.selectByDayAndCrity()!=null){
+            return RUtil.setOK("查询成功", flightMapper.selectByDayAndCrity());
+        }else {
+            return RUtil.setERROR("查询失败", null);
         }
     }
 
